@@ -5,19 +5,8 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
-
 import java.util.Locale;
-
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-
-@Data
-
-@AllArgsConstructor
 
 
 public class DataGenerator {
@@ -47,30 +36,24 @@ public class DataGenerator {
     }
 
     public static String getRandomPassword() {
-        String password = faker.internet().password(false);
+        String password = faker.internet().password();
         return password;
     }
 
-    public static class Registration {
-        private Registration() {
-        }
-
-        public static RegistrationDto getUser(String status) {
-            RegistrationDto user = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
-            return user;
-        }
-
-        public static RegistrationDto getRegisteredUser(String status) {
-            RegistrationDto registeredUser = getUser("active");
-            sendRequest(registeredUser);
-            return registeredUser;
-        }
+    public static RegistrationDto getUserActive() {
+        return new RegistrationDto(faker.name().username(), faker.internet().password(),
+                "active");
     }
 
-    @Value
-    public static class RegistrationDto {
-        String login;
-        String password;
-        String status;
+    public static RegistrationDto getUserBlocked() {
+        return new RegistrationDto(faker.name().username(), faker.internet().password(),
+                "blocked");
     }
+
+
 }
+
+
+
+
+
